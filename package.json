@@ -1,9 +1,13 @@
 {
-  "name": "mouseless-plugin",
   "title": "Mouseless",
-  "id": "jid1-tCi0cNSM24lhnw",
+  "name": "mouseless",
+  "version": "0.2.0",
   "description": "For a mouseless future.",
+  "main": "index.js",
   "author": "Martin Dørum Nygaard",
-  "license": "MIT",
-  "version": "0.1"
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT"
 }

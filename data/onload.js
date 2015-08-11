@@ -1,3 +1,12 @@
+var conf = {
+	scroll_speed: 0.4,
+	scroll_speed_fast: 1.1,
+	scroll_friction: 0.8,
+	chars: "SANOTEHUCP",
+	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
+	location_change_check_timeout: 2000
+}
+
 var keys = {
 	scroll_up: {code: 84},
 	scroll_down: {code: 78},
@@ -17,14 +26,18 @@ var keys = {
 	history_forward: {code: 83, ctrlKey: true}
 }
 
-var conf = {
-	scroll_speed: 0.4,
-	scroll_speed_fast: 1.1,
-	scroll_friction: 0.8,
-	chars: "SANOTEHUCP",
-	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
-	location_change_check_timeout: 2000
+function isMatch(k, evt) {
+	if ((k.code === evt.keyCode)
+	&& (!!k.ctrlKey == evt.ctrlKey)
+	&& (!!k.shiftKey == evt.shiftKey)
+	&& (!!k.altKey == evt.altKey)
+	&& (!!k.metaKey == evt.metaKey)) {
+		return true;
+	}
+
+	return false;
 }
+
 
 //There's a lot we don't want to do if we're not on an actual webpage, but on
 //the "speed dial"-ish pages.
@@ -132,18 +145,19 @@ var blobList = {
 
 			var blobElem = document.createElement("div");
 			blobElem.innerHTML = key;
-			blobElem.style =
-				"position: absolute;"+
-				"background-color: yellow;"+
-				"border: 1px solid black;"+
-				"border-radius: 10px;"+
-				"padding-left: 3px;"+
-				"padding-right: 3px;"+
-				"color: black;"+
-				"top: "+pos.top+"px;"+
-				"left: "+pos.left+"px;"+
-				"line-height: 12px;"+
-				"font-size: 8pt;";
+			blobElem.style = [
+				"position: absolute",
+				"background-color: yellow",
+				"border: 1px solid black",
+				"border-radius: 10px",
+				"padding-left: 3px",
+				"padding-right: 3px",
+				"color: black",
+				"top: "+pos.top+"px",
+				"left: "+pos.left+"px",
+				"line-height: 12px",
+				"font-size: 12px"
+			].join(" !important;");
 			blobList.container.appendChild(blobElem);
 
 			blobList.blobs[key] = {
@@ -215,29 +229,41 @@ setInterval(function() {
 	currentUrl = location.href;
 }, conf.location_change_check_timeout);
 
-function isMatch(k, evt) {
-	if ((k.code === evt.keyCode)
-	&& (!!k.ctrlKey == evt.ctrlKey)
-	&& (!!k.shiftKey == evt.shiftKey)
-	&& (!!k.altKey == evt.altKey)
-	&& (!!k.metaKey == evt.metaKey)) {
-		return true;
-	}
-
-	return false;
-}
-
 var pressedKeys = [];
 
+function inArray(arr, val) {
+	return (arr.indexOf(val) !== -1);
+}
+
+function isValidElem(elem) {
+	var tag = elem.tagName.toLowerCase();
+
+	if (tag === "textarea")
+		return false;
+
+	if (tag === "select")
+		return false;
+
+	if (elem.contentEditable.toLowerCase() === "true")
+		return false;
+
+	if ((tag === "input")
+	&&  (!inArray(conf.input_whitelist, elem.type.toLowerCase()))) {
+		return false;
+	}
+
+	return true;
+}
+
 window.addEventListener("keydown", function(evt) {
+	if (/about:.+/.test(location.href))
+		return;
+
+	var active = document.activeElement;
 
 	//We don't want to do anything if the user is tpying in an input field,
 	//unless the key is to deselect an input field
-	var active = document.activeElement;
-	if ((active.tagName === "TEXTAREA")
-	||  (active.tagName === "INPUT" && conf.input_whitelist.indexOf(active.type.toLowerCase) === -1)
-	||  (/true/i.test(active.contentEditable))) {
-
+	if (!isValidElem(active)) {
 		if (isMatch(keys.elem_deselect, evt)) {
 			active.blur();
 		} else {
@@ -255,9 +281,13 @@ window.addEventListener("keydown", function(evt) {
 	}
 
 	//Handle other key presses
-	
+
+	//Deselect element
+	if (onWebPage && isMatch(keys.elem_deselect, evt)) {
+		active.blur();
+
 	//Show/hide/reload blobs
-	if (onWebPage && !blobList.visible && isMatch(keys.blobs_show, evt)) {
+	} else if (onWebPage && !blobList.visible && isMatch(keys.blobs_show, evt)) {
 		if (blobList.needLoadBlobs)
 			blobList.loadBlobs();
 		blobList.needLoadBlobs = false;
