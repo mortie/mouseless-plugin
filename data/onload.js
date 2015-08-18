@@ -266,6 +266,7 @@ window.addEventListener("keydown", function(evt) {
 	if (!isValidElem(active)) {
 		if (isMatch(keys.elem_deselect, evt)) {
 			active.blur();
+			blobList.hideBlobs();
 		} else {
 			return;
 		}
