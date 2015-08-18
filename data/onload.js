@@ -267,6 +267,7 @@ window.addEventListener("keydown", function(evt) {
 		if (isMatch(keys.elem_deselect, evt)) {
 			active.blur();
 			blobList.hideBlobs();
+			return;
 		} else {
 			return;
 		}
@@ -275,6 +276,12 @@ window.addEventListener("keydown", function(evt) {
 	//User is typing a key to a blob
 	var c = String.fromCharCode(evt.keyCode);
 	if (blobList.visible && conf.chars.indexOf(c) !== -1) {
+		//Hide blobs if appropriate
+		if (isMatch(keys.blobs_hide, evt)) {
+			blobList.hideBlobs();
+			return;
+		}
+
 		blobList.appendKey(c);
 		evt.preventDefault();
 		evt.stopPropagation();
@@ -285,6 +292,7 @@ window.addEventListener("keydown", function(evt) {
 
 	//Deselect element
 	if (onWebPage && isMatch(keys.elem_deselect, evt)) {
+		blobList.hideBlobs();
 		active.blur();
 
 	//Show/hide/reload blobs
