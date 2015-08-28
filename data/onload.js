@@ -8,23 +8,37 @@ var conf = {
 }
 
 var keys = {
-	scroll_up: {code: 84},
-	scroll_down: {code: 78},
+	scroll_up: {code: "T"},
+	scroll_down: {code: "N"},
 	scroll_up_fast: {code: 219, shiftKey: true},
 	scroll_down_fast: {code: 221, shiftKey: true},
-	blobs_show: {code: 68},
-	blobs_show_reload: {code: 68, ctrlKey: true},
+
+	blobs_show: {code: "D"},
+	blobs_show_reload: {code: "D", ctrlKey: true},
+
 	blobs_hide: {code: 27},
 	blobs_click: {code: 13},
 	blobs_click_new_tab: {code: 13, shiftKey: true},
 	elem_deselect: {code: 27},
-	change_tab_left: {code: 72},
-	change_tab_right: {code: 83},
-	move_tab_left: {code: 72, shiftKey: true},
-	move_tab_right: {code: 83, shiftKey: true},
-	history_back: {code: 72, ctrlKey: true},
-	history_forward: {code: 83, ctrlKey: true}
+
+	change_tab_left: {code: "H"},
+	change_tab_right: {code: "S"},
+
+	move_tab_left: {code: "H", shiftKey: true},
+	move_tab_right: {code: "S", shiftKey: true},
+
+	history_back: {code: "H", ctrlKey: true},
+	history_forward: {code: "S", ctrlKey: true}
 }
+
+for (var i in keys) {
+	if (typeof keys[i].code === "string") {
+		console.log(keys[i].code.charCodeAt(0));
+		keys[i].code = keys[i].code.charCodeAt(0);
+	}
+}
+
+console.log(keys);
 
 function isMatch(k, evt) {
 	if ((k.code === evt.keyCode)
@@ -382,7 +396,7 @@ var scroll = {
 			scroll.velocity *= conf.scroll_friction;
 		}
 
-		if (tdiff < 10 && scroll.velocity < 0.03 && scroll.velocity > -0.03) {
+		if (tdiff < 100 && scroll.velocity < -0.1 && scroll.velocity > 0.1) {
 			scroll.velocity = 0;
 			cancelAnimationFrame(scroll.raf);
 			scroll.raf = null;
