@@ -33,12 +33,9 @@ var keys = {
 
 for (var i in keys) {
 	if (typeof keys[i].code === "string") {
-		console.log(keys[i].code.charCodeAt(0));
 		keys[i].code = keys[i].code.charCodeAt(0);
 	}
 }
-
-console.log(keys);
 
 function isMatch(k, evt) {
 	if ((k.code === evt.keyCode)
