@@ -83,31 +83,38 @@ var blobList = {
 
 	createContainer: function() {
 		var container = document.createElement("div");
-		container.style =
-			"pointer-events: none;"+
-			"display: none;"+
-			"position: absolute;"+
-			"top: 0px;"+
-			"left: 0px;"+
-			"z-index: 2147483647"; //Max z-index value in most browsers
+		container.style = [
+			"pointer-events: none",
+			"display: none",
+			"position: absolute;",
+			"top: 0px",
+			"left: 0px",
+			"z-index: 2147483647",
+			"box-sizing: content-box",
+			""
+		].join(" !important;");
 		document.body.appendChild(container);
 		blobList.container = container;
 	},
 
 	createOverview: function() {
 		var overview = document.createElement("div");
-		overview.style =
-			"position: fixed;"+
-			"top: 0px;"+
-			"left: 0px;"+
-			"background-color: white;"+
-			"border-bottom: 2px solid black;"+
-			"border-right: 2px solid black;"+
-			"color: black;"+
-			"font-size: 8pt;"+
-			"padding: 3px;"+
-			"height: 15px;"+
-			"z-index: 2147483647"; //Max z-index value in most browsers
+		overview.style = [
+			"position: fixed",
+			"top: 0px",
+			"left: 0px",
+			"background-color: white",
+			"border-bottom: 2px solid black",
+			"border-right: 2px solid black",
+			"color: black",
+			"font: 8pt sans-serif",
+			"padding: 3px",
+			"height: 15px",
+			"line-height: 15px",
+			"z-index: 2147483647",
+			"box-sizing: content-box",
+			""
+		].join(" !important;");
 		blobList.container.appendChild(overview);
 		blobList.overview = overview;
 	},
