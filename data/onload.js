@@ -1,5 +1,5 @@
 var conf = {
-	scroll_speed: 0.4,
+	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
 	chars: "SANOTEHUCP",
@@ -393,7 +393,7 @@ var scroll = {
 			scroll.velocity *= conf.scroll_friction;
 		}
 
-		if (tdiff < 100 && scroll.velocity < -0.1 && scroll.velocity > 0.1) {
+		if (tdiff < 100 && scroll.velocity > -0.1 && scroll.velocity < 0.1) {
 			scroll.velocity = 0;
 			cancelAnimationFrame(scroll.raf);
 			scroll.raf = null;
