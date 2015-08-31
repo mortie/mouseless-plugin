@@ -14,8 +14,6 @@ var keys = {
 	scroll_down_fast: {code: 221, shiftKey: true},
 
 	blobs_show: {code: "D"},
-	blobs_show_reload: {code: "D", ctrlKey: true},
-
 	blobs_hide: {code: 27},
 	blobs_click: {code: 13},
 	blobs_click_new_tab: {code: 13, shiftKey: true},
@@ -100,14 +98,15 @@ var blobList = {
 		var overview = document.createElement("div");
 		overview.style =
 			"position: fixed;"+
-			"width: 100%;"+
-			"bottom: 0px;"+
+			"top: 0px;"+
+			"left: 0px;"+
 			"background-color: white;"+
-			"border-top: 2px solid black;"+
+			"border-bottom: 2px solid black;"+
+			"border-right: 2px solid black;"+
 			"color: black;"+
-			"font-size: 10pt;"+
-			"padding: 5px;"+
-			"height: 20px;"+
+			"font-size: 8pt;"+
+			"padding: 3px;"+
+			"height: 15px;"+
 			"z-index: 2147483647"; //Max z-index value in most browsers
 		blobList.container.appendChild(overview);
 		blobList.overview = overview;
@@ -344,11 +343,6 @@ window.addEventListener("keydown", function(evt) {
 
 	//Show/hide/reload blobs
 	} else if (onWebPage && !blobList.visible && isMatch(keys.blobs_show, evt)) {
-		if (blobList.needLoadBlobs)
-			blobList.loadBlobs();
-		blobList.needLoadBlobs = false;
-		blobList.showBlobs();
-	} else if (onWebPage && !blobList.visible && isMatch(keys.blobs_show_reload, evt)) {
 		blobList.loadBlobs();
 		blobList.needLoadBlobs = false;
 		blobList.showBlobs();
