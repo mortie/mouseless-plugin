@@ -19,6 +19,8 @@ var keys = {
 	blobs_hide: {code: 27},
 	blobs_click: {code: 13},
 	blobs_click_new_tab: {code: 13, shiftKey: true},
+	blobs_backspace: {code: 8},
+
 	elem_deselect: {code: 27},
 
 	change_tab_left: {code: "H"},
@@ -74,6 +76,7 @@ function getElemPos(elem) {
 var blobList = {
 	blobs: {},
 	container: null,
+	overview: null,
 
 	visible: false,
 	needLoadBlobs: true,
@@ -91,6 +94,23 @@ var blobList = {
 			"z-index: 2147483647"; //Max z-index value in most browsers
 		document.body.appendChild(container);
 		blobList.container = container;
+	},
+
+	createOverview: function() {
+		var overview = document.createElement("div");
+		overview.style =
+			"position: fixed;"+
+			"width: 100%;"+
+			"bottom: 0px;"+
+			"background-color: white;"+
+			"border-top: 2px solid black;"+
+			"color: black;"+
+			"font-size: 10pt;"+
+			"padding: 5px;"+
+			"height: 20px;"+
+			"z-index: 2147483647"; //Max z-index value in most browsers
+		blobList.container.appendChild(overview);
+		blobList.overview = overview;
 	},
 
 	init: function() {
@@ -112,7 +132,8 @@ var blobList = {
 		var linkElems = document.querySelectorAll("a, button, input, textarea");
 
 		//Remove old container contents
-		blobList.container.innerHTML = ""
+		blobList.container.innerHTML = "";
+		blobList.createOverview();
 
 		//Remove old blobs
 		blobList.blobs = {};
@@ -227,6 +248,12 @@ var blobList = {
 
 	appendKey: function(c) {
 		blobList.currentKey += c;
+		blobList.overview.innerHTML = blobList.currentKey;
+	},
+
+	backspace: function() {
+		blobList.currentKey = blobList.currentKey.substring(0, blobList.currentKey.length - 1);
+		blobList.overview.innerHTML = blobList.currentKey;
 	}
 }
 blobList.init();
@@ -285,18 +312,27 @@ window.addEventListener("keydown", function(evt) {
 	}
 
 	//User is typing a key to a blob
-	var c = String.fromCharCode(evt.keyCode);
-	if (blobList.visible && conf.chars.indexOf(c) !== -1) {
+	if (blobList.visible) {
+
 		//Hide blobs if appropriate
 		if (isMatch(keys.blobs_hide, evt)) {
 			blobList.hideBlobs();
 			return;
 		}
 
-		blobList.appendKey(c);
-		evt.preventDefault();
-		evt.stopPropagation();
-		return false;
+		//Backspace if appropriate
+		if (isMatch(keys.blobs_backspace, evt)) {
+			blobList.backspace();
+			return;
+		}
+
+		var c = String.fromCharCode(evt.keyCode);
+		if (conf.chars.indexOf(c) !== -1) {
+			blobList.appendKey(c);
+			evt.preventDefault();
+			evt.stopPropagation();
+			return false;
+		}
 	}
 
 	//Handle other key presses
