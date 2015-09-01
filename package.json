@@ -1,7 +1,7 @@
 {
   "title": "Mouseless",
   "name": "mouseless",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "For a mouseless future.",
   "main": "index.js",
   "author": "Martin Dørum Nygaard",
@@ -9,5 +9,78 @@
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "preferences": [
+    {
+      "name": "chars", "title": "Characters",
+      "type": "string",
+      "value": "sanotehucp"
+    }, {
+      "name": "scroll_up", "title": "Scroll Up",
+      "type": "string",
+      "value": "t"
+    }, {
+      "name": "scroll_down", "title": "Scroll Down",
+      "type": "string",
+      "value": "n"
+    }, {
+      "name": "scroll_up_fast", "title": "Scroll Up Fast",
+      "type": "string",
+      "value": "<Shift>{"
+    }, {
+      "name": "scroll_down_fast", "title": "Scroll Down Fast",
+      "type": "string",
+      "value": "<Shift>}"
+    }, {
+      "name": "blobs_show", "title": "Show Blobs",
+      "type": "string",
+      "value": "d"
+    }, {
+      "name": "blobs_hide", "title": "Hide Blobs",
+      "type": "string",
+      "value": "Escape"
+    }, {
+      "name": "blobs_click", "title": "Click",
+      "type": "string",
+      "value": "Enter"
+    }, {
+      "name": "blobs_click_new_tab", "title": "Open in New Tab",
+      "type": "string",
+      "value": "<Shift>Enter"
+    }, {
+      "name": "blobs_backspace", "title": "Blobs Backspace",
+      "type": "string",
+      "value": "Backspace",
+      "hidden": true
+    }, {
+      "name": "elem_deselect", "title": "Deselect Element",
+      "type": "string",
+      "value": "Escape",
+      "hidden": true
+    }, {
+      "name": "change_tab_left", "title": "Previous Tab",
+      "type": "string",
+      "value": "h"
+    }, {
+      "name": "change_tab_right", "title": "Next Tab",
+      "type": "string",
+      "value": "s"
+    }, {
+      "name": "move_tab_left", "title": "Move Tab Left",
+      "type": "string",
+      "value": "H"
+    }, {
+      "name": "move_tab_right", "title": "Move Tab Right",
+      "type": "string",
+      "value": "S"
+    }, {
+      "name": "history_back", "title": "Back",
+      "type": "string",
+      "value": "<Control>h"
+    }, {
+      "name": "history_forward", "title": "Forwards",
+      "type": "string",
+      "value": "<Control>s"
+    }
+  ]
 }

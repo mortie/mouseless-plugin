@@ -7,38 +7,20 @@ var conf = {
 	location_change_check_timeout: 2000
 }
 
-var keys = {
-	scroll_up: {code: "T"},
-	scroll_down: {code: "N"},
-	scroll_up_fast: {code: 219, shiftKey: true},
-	scroll_down_fast: {code: 221, shiftKey: true},
+var keys = {};
 
-	blobs_show: {code: "D"},
-	blobs_hide: {code: 27},
-	blobs_click: {code: 13},
-	blobs_click_new_tab: {code: 13, shiftKey: true},
-	blobs_backspace: {code: 8},
-
-	elem_deselect: {code: 27},
-
-	change_tab_left: {code: "H"},
-	change_tab_right: {code: "S"},
-
-	move_tab_left: {code: "H", shiftKey: true},
-	move_tab_right: {code: "S", shiftKey: true},
-
-	history_back: {code: "H", ctrlKey: true},
-	history_forward: {code: "S", ctrlKey: true}
-}
-
-for (var i in keys) {
-	if (typeof keys[i].code === "string") {
-		keys[i].code = keys[i].code.charCodeAt(0);
+self.port.on("conf", function(c) {
+	for (var i in c) {
+		conf[i] = c[i];
 	}
-}
+});
+
+self.port.on("keys", function(k) {
+	keys = k;
+});
 
 function isMatch(k, evt) {
-	if ((k.code === evt.keyCode)
+	if ((k.code === evt.key)
 	&& (!!k.ctrlKey == evt.ctrlKey)
 	&& (!!k.shiftKey == evt.shiftKey)
 	&& (!!k.altKey == evt.altKey)
@@ -48,7 +30,6 @@ function isMatch(k, evt) {
 
 	return false;
 }
-
 
 //There's a lot we don't want to do if we're not on an actual webpage, but on
 //the "speed dial"-ish pages.
@@ -332,7 +313,7 @@ window.addEventListener("keydown", function(evt) {
 			return;
 		}
 
-		var c = String.fromCharCode(evt.keyCode);
+		var c = evt.key;
 		if (conf.chars.indexOf(c) !== -1) {
 			blobList.appendKey(c);
 			evt.preventDefault();
