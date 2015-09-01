@@ -88,7 +88,7 @@ var blobList = {
 			"border-bottom: 2px solid black",
 			"border-right: 2px solid black",
 			"color: black",
-			"font: 8pt sans-serif",
+			"font: 12px sans-serif",
 			"padding: 3px",
 			"height: 15px",
 			"line-height: 15px",
@@ -163,7 +163,7 @@ var blobList = {
 				key += randomChar();
 
 			var blobElem = document.createElement("div");
-			blobElem.innerHTML = key;
+			blobElem.innerHTML = key.toUpperCase();
 			blobElem.style = [
 				"position: absolute",
 				"background-color: yellow",
@@ -172,10 +172,12 @@ var blobList = {
 				"padding-left: 3px",
 				"padding-right: 3px",
 				"color: black",
+				"font: 12px sans-serif",
 				"top: "+pos.top+"px",
 				"left: "+pos.left+"px",
 				"line-height: 12px",
-				"font-size: 12px"
+				"font-size: 12px",
+				""
 			].join(" !important;");
 			blobList.container.appendChild(blobElem);
 
