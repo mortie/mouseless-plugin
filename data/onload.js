@@ -235,6 +235,22 @@ var blobList = {
 		blobList.hideBlobs();
 	},
 
+	clickClipboard: function() {
+		if (!blobList.visible)
+			return;
+
+		var blob = blobList.blobs[blobList.currentKey];
+		if (!blob)
+			return;
+
+		if (!blob.linkElem.href)
+			return;
+
+		self.port.emit("clipboard_set", blob.linkElem.href);
+
+		blobList.hideBlobs();
+	},
+
 	appendKey: function(c) {
 		blobList.currentKey += c;
 		blobList.overview.innerHTML = blobList.currentKey;
@@ -344,6 +360,8 @@ window.addEventListener("keydown", function(evt) {
 		blobList.click();
 	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_click_new_tab, evt)) {
 		blobList.clickNewTab();
+	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_click_clipboard, evt)) {
+		blobList.clickClipboard();
 
 	//Scrolling
 	} else if (onWebPage && isMatch(keys.scroll_up, evt)) {

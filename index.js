@@ -1,6 +1,7 @@
 var tabs = require("sdk/tabs");
 var self = require("sdk/self");
 var simple_prefs = require("sdk/simple-prefs");
+var clipboard = require("sdk/clipboard");
 
 var conf = {};
 var keys = {};
@@ -99,5 +100,9 @@ tabs.on("ready", function(tab) {
 
 	worker.port.on("move_tab_right", function() {
 		moveRelativeTab(1);
+	});
+
+	worker.port.on("clipboard_set", function(text) {
+		clipboard.set(text);
 	});
 });
