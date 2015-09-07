@@ -9,13 +9,13 @@ var conf = {
 
 var keys = {};
 
-self.port.on("conf", function(c) {
+bridge.onConf(function(c) {
 	for (var i in c) {
 		conf[i] = c[i];
 	}
 });
 
-self.port.on("keys", function(k) {
+bridge.onKeys(function(k) {
 	keys = k;
 });
 
@@ -236,7 +236,7 @@ var blobList = {
 			return;
 
 		if (blob.linkElem.tagName == "A" && blob.linkElem.href) {
-			self.port.emit("tab_open", blob.linkElem.href);
+			bridge.openTab(blob.linkElem.href);
 		} else {
 			blob.linkElem.click();
 			blob.linkElem.focus();
@@ -256,7 +256,7 @@ var blobList = {
 		if (!blob.linkElem.href)
 			return;
 
-		self.port.emit("clipboard_set", blob.linkElem.href);
+		bridge.setClipboard(blob.linkElem.href);
 
 		blobList.hideBlobs();
 	},
@@ -391,15 +391,15 @@ window.addEventListener("keydown", function(evt) {
 
 	//Change tab
 	} else if (isMatch(keys.change_tab_left, evt)) {
-		self.port.emit("change_tab_left");
+		bridge.changeTabLeft();
 	} else if (isMatch(keys.change_tab_right, evt)) {
-		self.port.emit("change_tab_right");
+		bridge.changeTabRight();
 
 	//Move tab
 	} else if (isMatch(keys.move_tab_left, evt)) {
-		self.port.emit("move_tab_left");
+		bridge.moveTabLeft();
 	} else if (isMatch(keys.move_tab_right, evt)) {
-		self.port.emit("move_tab_right");
+		bridge.moveTabRight();
 
 	//We don't want to stop the event from propagating
 	//if it hasn't matched anything yet
