@@ -35,9 +35,19 @@ function isMatch(k, evt) {
 //the "speed dial"-ish pages.
 var onWebPage = (document.body !== undefined);
 
-function randomChar() {
-	var index = Math.floor(Math.random() * conf.chars.length);
-	return conf.chars[index];
+function createKey(n) {
+	var str = "";
+	var base = conf.chars.length;
+
+	if (n == 0)
+		return conf.chars[0];
+
+	while (n > 0) {
+		str += conf.chars[n % base];
+		n = Math.floor(n / base);
+	}
+
+	return str;
 }
 
 function getElemPos(elem) {
@@ -126,11 +136,11 @@ var blobList = {
 		blobList.blobs = {};
 
 		var i = 0;
+		var nRealBlobs = 0;
 		function addBlob() {
 			var linkElem = linkElems[i];
-			i += 1;
 
-			if (i > linkElems.length)
+			if (i++ >= linkElems.length)
 				return false;
 
 			if (linkElem === undefined)
@@ -158,9 +168,9 @@ var blobList = {
 			if (pos.top - 100 > (window.scrollY + window.innerHeight))
 				return true;
 
-			var key = randomChar();
-			while (blobList.blobs[key])
-				key += randomChar();
+			//Create the blob's key
+			key = createKey(nRealBlobs);
+			nRealBlobs += 1;
 
 			var blobElem = document.createElement("div");
 			blobElem.innerHTML = key.toUpperCase();
@@ -185,7 +195,7 @@ var blobList = {
 				blobElem: blobElem,
 				linkElem: linkElem
 			}
-	
+
 			return true;
 		}
 
