@@ -297,6 +297,9 @@ function isValidElem(elem) {
 	if (tag === "select")
 		return false;
 
+	if (tag === "canvas")
+		return false;
+
 	if (elem.contentEditable.toLowerCase() === "true")
 		return false;
 
