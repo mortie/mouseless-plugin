@@ -256,9 +256,14 @@ var blobList = {
 		if (!blob)
 			return;
 
-		blob.linkElem.click();
-		blob.linkElem.focus();
-		blobList.hideBlobs();
+		if (blob.linkElem.tagName == "A") {
+			blobList.hideBlobs();
+			location.href = blob.linkElem.href;
+		} else {
+			blobList.hideBlobs();
+			blob.linkElem.click();
+			blob.linkElem.focus();
+		}
 	},
 
 	clickNewTab: function() {
@@ -269,14 +274,13 @@ var blobList = {
 		if (!blob)
 			return;
 
+		blobList.hideBlobs();
 		if (blob.linkElem.tagName == "A" && blob.linkElem.href) {
 			bridge.openTab(blob.linkElem.href);
 		} else {
 			blob.linkElem.click();
 			blob.linkElem.focus();
 		}
-
-		blobList.hideBlobs();
 	},
 
 	clickClipboard: function() {
