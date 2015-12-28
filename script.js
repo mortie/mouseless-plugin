@@ -222,7 +222,9 @@ var blobList = {
 		if (!blob)
 			return;
 
-		if (blob.linkElem.tagName == "A") {
+		if (blob.linkElem.tagName == "A"
+		&&  blob.linkElem.href
+		&&  blob.linkElem.href.indexOf("javascript") != 0) {
 			blobList.hideBlobs();
 			location.href = blob.linkElem.href;
 		} else {
