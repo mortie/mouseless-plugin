@@ -1,10 +1,45 @@
+var bridge = {
+	onConf: function(cb) {
+		self.port.on("conf", function(c) {
+			cb(c);
+		});
+	},
+	onKeys: function(cb) {
+		self.port.on("keys", function(k) {
+			cb(k);
+		});
+	},
+
+	changeTabLeft: function() {
+		self.port.emit("change_tab_left");
+	},
+	changeTabRight: function() {
+		self.port.emit("change_tab_right");
+	},
+
+	moveTabLeft: function() {
+		self.port.emit("move_tab_left");
+	},
+	moveTabRight: function() {
+		self.port.emit("move_tab_right");
+	},
+
+	openTab: function(href) {
+		self.port.emit("tab_open", href);
+	},
+
+	setClipboard: function(txt) {
+		self.port.emit("clipboard_set", txt);
+	}
+}
 var conf = {
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
 	chars: "SANOTEHUCP",
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
-	location_change_check_timeout: 2000
+	location_change_check_timeout: 2000,
+	yt_fix_space: true
 }
 
 var keys = {};
@@ -409,6 +444,15 @@ window.addEventListener("keydown", function(evt) {
 		bridge.moveTabLeft();
 	} else if (isMatch(keys.move_tab_right, evt)) {
 		bridge.moveTabRight();
+
+	//Fix youtube space by emulating k
+	} else if (conf.yt_fix_space
+			&& /youtube\.com/.test(location.host)
+			&& location.pathname.indexOf("/watch") === 0
+			&& evt.keyCode === 32) {
+
+		var e = new KeyboardEvent("keydown", { keyCode: 75 });
+		document.dispatchEvent(e);
 
 	//We don't want to stop the event from propagating
 	//if it hasn't matched anything yet
