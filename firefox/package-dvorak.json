@@ -1,6 +1,6 @@
 {
-  "title": "Mouseless",
-  "name": "mouseless",
+  "title": "Mouseless Dvorak",
+  "name": "mouseless-dvorak",
   "version": "0.6.0",
   "description": "For a mouseless future.",
   "main": "index.js",

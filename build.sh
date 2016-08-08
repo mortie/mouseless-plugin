@@ -24,9 +24,14 @@ cd "$TARGET"
 # Create complete script file
 SCRIPT=$(cat bridge.js ../script.js)
 
+CONF="qwerty"
+if [ "$2" != "" ]; then
+	CONF="$2"
+fi
+
 # Run target's build script
 mkdir -p build
-echo "$SCRIPT" | ./build.sh "mouseless-$TARGET"
+echo "$SCRIPT" | ./build.sh "mouseless-${TARGET}-${CONF}" "$2"
 
 mv build/* ..
 cd ..
