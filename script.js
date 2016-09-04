@@ -164,7 +164,7 @@ var blobList = {
 		var linkElems = document.querySelectorAll("a, button, input, textarea");
 
 		//Remove old container contents
-		blobList.container.innerHTML = "";
+		blobList.container.innerText = "";
 		blobList.createOverview();
 
 		//Remove old blobs
@@ -190,7 +190,7 @@ var blobList = {
 
 			//Get element's absolute position
 			var pos = getElemPos(linkElem);
-	
+
 			//Lots of things which don't really exist have an X and Y value of 0
 			if (pos.top == 0 && pos.left == 0)
 				return true;
@@ -208,7 +208,7 @@ var blobList = {
 			nRealBlobs += 1;
 
 			var blobElem = document.createElement("div");
-			blobElem.innerHTML = key.toUpperCase();
+			blobElem.innerText = key.toUpperCase();
 			blobElem.style = [
 				"position: absolute",
 				"background-color: yellow",
@@ -304,12 +304,12 @@ var blobList = {
 
 	appendKey: function(c) {
 		blobList.currentKey += c;
-		blobList.overview.innerHTML = blobList.currentKey;
+		blobList.overview.innerText = blobList.currentKey;
 	},
 
 	backspace: function() {
 		blobList.currentKey = blobList.currentKey.substring(0, blobList.currentKey.length - 1);
-		blobList.overview.innerHTML = blobList.currentKey;
+		blobList.overview.innerText = blobList.currentKey;
 	}
 }
 blobList.init();
