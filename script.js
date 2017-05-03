@@ -445,14 +445,13 @@ window.addEventListener("keydown", function(evt) {
 	} else if (isMatch(keys.move_tab_right, evt)) {
 		bridge.moveTabRight();
 
-	//Fix youtube space by emulating k
+	//Fix youtube space by emulating clicking the player
 	} else if (conf.yt_fix_space
 			&& /youtube\.com/.test(location.host)
 			&& location.pathname.indexOf("/watch") === 0
 			&& evt.keyCode === 32) {
 
-		var e = new KeyboardEvent("keydown", { keyCode: 75 });
-		document.dispatchEvent(e);
+		document.getElementById("movie_player").click();
 
 	//We don't want to stop the event from propagating
 	//if it hasn't matched anything yet

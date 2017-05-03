@@ -1,10 +1,10 @@
 {
   "title": "Mouseless",
   "name": "mouseless",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "For a mouseless future.",
   "main": "index.js",
-  "author": "Martin Dørum Nygaard",
+  "author": "Martin Dørum",
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
