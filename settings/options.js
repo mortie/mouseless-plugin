@@ -1,76 +1,92 @@
 
 var presets = {
 	qwerty_us: {
-		scroll_up: "k",
-		scroll_down: "l",
-		scroll_up_fast: "<Shift>_",
-		scroll_down_fast: "<Shift>+",
-		blobs_show: "h",
-		blobs_hide: "Escape",
-		blobs_click: "Enter",
-		blobs_click_new_tab: "<Shift>Enter",
-		blobs_click_clipboard: "<Control>Enter",
-		blobs_backspace: "Backspace",
-		elem_deselect: "Escape",
-		change_tab_left: "j",
-		change_tab_right: ";",
-		move_tab_left: "<Shift>J",
-		move_tab_right: "<Shift>;",
-		history_back: "<Control>j",
-		history_forward: "<Control>;",
+		conf: {
+			chars: ";alskdjfir",
+		},
+		keys: {
+			scroll_up: "k",
+			scroll_down: "l",
+			scroll_up_fast: "<Shift>_",
+			scroll_down_fast: "<Shift>+",
+			blobs_show: "h",
+			blobs_hide: "Escape",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_backspace: "Backspace",
+			elem_deselect: "Escape",
+			change_tab_left: "j",
+			change_tab_right: ";",
+			move_tab_left: "<Shift>J",
+			move_tab_right: "<Shift>;",
+			history_back: "<Control>j",
+			history_forward: "<Control>;",
+		},
 	},
 
 	qwerty_no: {
-		scroll_up: "k",
-		scroll_down: "l",
-		scroll_up_fast: "<Shift>?",
-		scroll_down_fast: "<Shift>`",
-		blobs_show: "h",
-		blobs_hide: "Escape",
-		blobs_click: "Enter",
-		blobs_click_new_tab: "<Shift>Enter",
-		blobs_click_clipboard: "<Control>Enter",
-		blobs_backspace: "Backspace",
-		elem_deselect: "Escape",
-		change_tab_left: "j",
-		change_tab_right: ";",
-		move_tab_left: "<Shift>J",
-		move_tab_right: "<Shift>ø",
-		history_back: "<Control>j",
-		history_forward: "<Control>ø",
+		conf: {
+			chars: "øalskdjfir",
+		},
+		keys: {
+			scroll_up: "k",
+			scroll_down: "l",
+			scroll_up_fast: "<Shift>?",
+			scroll_down_fast: "<Shift>`",
+			blobs_show: "h",
+			blobs_hide: "Escape",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_backspace: "Backspace",
+			elem_deselect: "Escape",
+			change_tab_left: "j",
+			change_tab_right: ";",
+			move_tab_left: "<Shift>J",
+			move_tab_right: "<Shift>ø",
+			history_back: "<Control>j",
+			history_forward: "<Control>ø",
+		},
 	},
 
 	dvorak: {
-		scroll_up: "t",
-		scroll_down: "n",
-		scroll_up_fast: "<Shift>{",
-		scroll_down_fast: "<Shift>}",
-		blobs_show: "d",
-		blobs_hide: "Escape",
-		blobs_click: "Enter",
-		blobs_click_new_tab: "<Shift>Enter",
-		blobs_click_clipboard: "<Control>Enter",
-		blobs_backspace: "Backspace",
-		elem_deselect: "Escape",
-		change_tab_left: "h",
-		change_tab_right: "s",
-		move_tab_left: "<Shift>H",
-		move_tab_right: "<Shift>S",
-		history_back: "<Control>h",
-		history_forward: "<Control>s",
+		conf: {
+			chars: "sanotehucp",
+		},
+		keys: {
+			scroll_up: "t",
+			scroll_down: "n",
+			scroll_up_fast: "<Shift>{",
+			scroll_down_fast: "<Shift>}",
+			blobs_show: "d",
+			blobs_hide: "Escape",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_backspace: "Backspace",
+			elem_deselect: "Escape",
+			change_tab_left: "h",
+			change_tab_right: "s",
+			move_tab_left: "<Shift>H",
+			move_tab_right: "<Shift>S",
+			history_back: "<Control>h",
+			history_forward: "<Control>s",
+		},
 	},
 };
 
-var defaultPreset = "qwerty_us";
+var defaultPreset = presets.qwerty_us;
 
 function forEachOption(cb) {
 	var opts = document.querySelectorAll("form .option");
 
 	for (var i in opts) {
 		if (!opts.hasOwnProperty(i)) continue;
-		var name = opts[i].getAttribute("name");
+		var str = opts[i].getAttribute("name");
+		var [ section, name ] = str.split(".");
 		var curr = opts[i].querySelector(".current");
-		cb(opts[i], name, curr);
+		cb(opts[i], section, name, curr);
 	}
 }
 
@@ -80,8 +96,8 @@ document.querySelector("select").addEventListener("change", e => {
 		return;
 
 	var preset = e.target.value;
-	forEachOption((el, name, curr) => {
-		curr.value = presets[preset][name];
+	forEachOption((el, section, name, curr) => {
+		curr.value = presets[preset][section][name];
 	});
 });
 
@@ -92,8 +108,9 @@ document.querySelector("form").addEventListener("submit", e => {
 	var opts = document.querySelectorAll("form .option");
 	var vals = {};
 
-	forEachOption((el, name, curr) => {
-		vals[name] = curr.value;
+	forEachOption((el, section, name, curr) => {
+		vals[section] = vals[section] || {};
+		vals[section][name] = curr.value;
 	});
 	browser.storage.local.set(vals);
 });
@@ -102,16 +119,13 @@ document.querySelector("form").addEventListener("submit", e => {
 async function loadOpts() {
 	var opts = document.querySelectorAll("form .option");
 
-	var keys = [];
+	var vals = await browser.storage.local.get([ "keys", "conf" ]);
 
-	forEachOption((el, name) => keys.push(name));
+	forEachOption((el, section, name, curr) => {
+		var sec = vals[section] || {};
+		var saved = sec[name];
 
-	var vals = await browser.storage.local.get(keys);
-
-	forEachOption((el, name, curr) => {
-		var saved = vals[name];
-
-		var def = presets[defaultPreset][name];
+		var def = defaultPreset[section][name];
 
 		curr.value = saved == null ? def : saved;
 	});

@@ -6,11 +6,6 @@ function callBridge(action, ...args) {
 }
 
 var bridge = {
-	onConf: function(cb) {
-	},
-	onKeys: function(cb) {
-	},
-
 	changeTabLeft: function() {
 		callBridge("changeTabLeft");
 	},
@@ -39,11 +34,11 @@ var bridge = {
 	},
 };
 
-var conf = {
+var defaultConf = {
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
-	chars: "sanotehucp",
+	chars: ";alskdjfir",
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
 	yt_fix_space: true,
@@ -68,16 +63,24 @@ var defaultKeys = {
 	history_back: "<Control>j",
 	history_forward: "<Control>;",
 };
-var keyNames = Object.keys(defaultKeys);
 
-browser.storage.local.get(keyNames).then(ks => {
+browser.storage.local.get([ "keys", "conf" ]).then(obj => {
+	var keyNames = Object.keys(defaultKeys);
 	for (var i in keyNames) {
 		var name = keyNames[i];
-		interpretKey(name, ks[name] || defaultKeys[name]);
+		interpretKey(name, obj.keys[name] || defaultKeys[name]);
+	}
+
+	var confNames = Object.keys(defaultConf);
+	for (var i in confNames) {
+		var name = confNames[i];
+		conf[name] = obj.conf[name] ==
+			null ? defaultConf[name] : obj.conf[name];
 	}
 });
 
 var keys = {};
+var conf = {};
 
 function interpretKey(name, k) {
 	var key = {};
@@ -106,12 +109,6 @@ function interpretKey(name, k) {
 
 	keys[name] = key;
 }
-
-bridge.onConf(function(c) {
-	for (var i in c) {
-		conf[i] = c[i];
-	}
-});
 
 function isMatch(k, evt) {
 	if ((k.code === evt.key) &&
