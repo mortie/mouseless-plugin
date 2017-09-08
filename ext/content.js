@@ -1,48 +1,111 @@
+function callBridge(action, ...args) {
+	browser.runtime.sendMessage({
+		action: action,
+		args: args
+	});
+}
+
 var bridge = {
 	onConf: function(cb) {
-		self.port.on("conf", function(c) {
-			cb(c);
-		});
 	},
 	onKeys: function(cb) {
-		self.port.on("keys", function(k) {
-			cb(k);
-		});
 	},
 
 	changeTabLeft: function() {
-		self.port.emit("change_tab_left");
+		callBridge("changeTabLeft");
 	},
 	changeTabRight: function() {
-		self.port.emit("change_tab_right");
+		callBridge("changeTabRight");
 	},
 
 	moveTabLeft: function() {
-		self.port.emit("move_tab_left");
+		callBridge("moveTabLeft");
 	},
 	moveTabRight: function() {
-		self.port.emit("move_tab_right");
+		callBridge("moveTabRight");
 	},
 
 	openTab: function(href) {
-		self.port.emit("tab_open", href);
+		callBridge("openTab", href);
 	},
 
 	setClipboard: function(txt) {
-		self.port.emit("clipboard_set", txt);
-	}
-}
+		var el = document.createElement("input");
+		document.body.appendChild(el);
+		el.value = txt;
+		el.select();
+		document.execCommand("copy");
+		document.body.removeChild(el);
+	},
+};
+
 var conf = {
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
-	chars: "SANOTEHUCP",
+	chars: "sanotehucp",
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
-	yt_fix_space: true
-}
+	yt_fix_space: true,
+};
+
+var defaultKeys = {
+	scroll_up: "k",
+	scroll_down: "l",
+	scroll_up_fast: "<Shift>_",
+	scroll_down_fast: "<Shift>+",
+	blobs_show: "h",
+	blobs_hide: "Escape",
+	blobs_click: "Enter",
+	blobs_click_new_tab: "<Shift>Enter",
+	blobs_click_clipboard: "<Control>Enter",
+	blobs_backspace: "Backspace",
+	elem_deselect: "Escape",
+	change_tab_left: "j",
+	change_tab_right: ";",
+	move_tab_left: "<Shift>J",
+	move_tab_right: "<Shift>;",
+	history_back: "<Control>j",
+	history_forward: "<Control>;",
+};
+var keyNames = Object.keys(defaultKeys);
+
+browser.storage.local.get(keyNames).then(ks => {
+	for (var i in keyNames) {
+		var name = keyNames[i];
+		interpretKey(name, ks[name] || defaultKeys[name]);
+	}
+});
 
 var keys = {};
+
+function interpretKey(name, k) {
+	var key = {};
+
+	var matches = k.match(/<.*>/g);
+	for (var i in matches) {
+		var m = matches[i]
+			.replace("<", "")
+			.replace(">", "")
+			.trim()
+			.toLowerCase();
+
+		if (m === "control")
+			key.ctrlKey = true;
+		else if (m === "shift")
+			key.shiftKey = true;
+		else if (m === "alt")
+			key.altKey = true;
+		else if (m === "meta")
+			key.metaKey = true;
+		else
+			console.error("Unknown modifier:", m);
+	}
+
+	key.code = k.replace(/<.*?>/g, "").trim();
+
+	keys[name] = key;
+}
 
 bridge.onConf(function(c) {
 	for (var i in c) {
@@ -50,16 +113,13 @@ bridge.onConf(function(c) {
 	}
 });
 
-bridge.onKeys(function(k) {
-	keys = k;
-});
-
 function isMatch(k, evt) {
-	if ((k.code === evt.key)
-	&& (!!k.ctrlKey == evt.ctrlKey)
-	&& (!!k.shiftKey == evt.shiftKey)
-	&& (!!k.altKey == evt.altKey)
-	&& (!!k.metaKey == evt.metaKey)) {
+	if ((k.code === evt.key) &&
+			(!!k.ctrlKey == evt.ctrlKey) &&
+			(!!k.shiftKey == evt.shiftKey) &&
+			(!!k.altKey == evt.altKey) &&
+			(!!k.metaKey == evt.metaKey)) {
+
 		return true;
 	}
 
@@ -310,8 +370,8 @@ var blobList = {
 	backspace: function() {
 		blobList.currentKey = blobList.currentKey.substring(0, blobList.currentKey.length - 1);
 		blobList.overview.innerText = blobList.currentKey;
-	}
-}
+	},
+};
 blobList.init();
 
 //Reload blobs whenever the URL changes
@@ -358,11 +418,12 @@ window.addEventListener("keydown", function(evt) {
 
 	var active = document.activeElement;
 
-	//We don't want to do anything if the user is tpying in an input field,
+	//We don't want to do anything if the user is typing in an input field,
 	//unless the key is to deselect an input field
 	if (!isValidElem(active)) {
 		if (isMatch(keys.elem_deselect, evt)) {
 			active.blur();
+			setTimeout(() => active.blur(), 50); // In case something tries to refocus
 			blobList.hideBlobs();
 			return;
 		} else {
@@ -508,5 +569,5 @@ var scroll = {
 	acceleration: 0,
 	velocity: 0,
 	startDate: 0,
-	endDate: 0
-}
+	endDate: 0,
+};

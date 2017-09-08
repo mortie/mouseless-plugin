@@ -1,0 +1,27 @@
+{
+	"manifest_version": 2,
+	"name": "Mouseless",
+	"version": "0.1",
+
+	"description": "For a mouseless future.",
+
+	"content_scripts": [
+		{
+			"matches": [ "<all_urls>" ],
+			"js": [ "ext/content.js" ]
+		}
+	],
+	"background": {
+		"scripts": [ "ext/background.js" ]
+	},
+
+	"options_ui": {
+		"page": "settings/options.html"
+	},
+
+	"permissions": [
+		"clipboardWrite",
+		"tabs",
+		"storage"
+	]
+}

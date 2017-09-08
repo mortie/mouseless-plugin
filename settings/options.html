@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Mouseless Settings</title>
+
+		<style>
+.option .default {
+	display: none;
+}
+
+form label {
+	margin: 12px;
+	margin-left: 0px;
+	display: inline-block;
+}
+form label input.current {
+	display: block;
+}
+
+form button,
+select{
+	display: block;
+	margin: 24px;
+	margin-left: 0px;
+	width: 50%;
+	text-align: center;
+}
+		</style>
+	</head>
+	<body>
+		<select id="presets">
+			<option>Select preset...</option>
+			<option value="qwerty_us">QWERTY</option>
+			<option value="qwerty_no">QWERTY (Norwegian)</option>
+			<option value="dvorak">Dvorak</option>
+		</select>
+
+		<form>
+			<button type="submit">Save</button>
+
+			<label class="option" name="scroll_up">
+				Scroll Up
+				<input class="current">
+			</label>
+
+			<label class="option" name="scroll_down">
+				Scroll Down
+				<input class="current">
+			</label>
+
+			<label class="option" name="scroll_up_fast">
+				Scroll Up Fast
+				<input class="current">
+			</label>
+
+			<label class="option" name="scroll_down_fast">
+				Scroll Down Fast
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_show">
+				Show Blobs
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_hide">
+				Hide Blobs
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_click">
+				Click
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_click_new_tab">
+				Open in New Tab
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_click_clipboard">
+				Save URL to Clipboard
+				<input class="current">
+			</label>
+
+			<label class="option" name="blobs_backspace">
+				Blobs Backspace
+				<input class="current">
+			</label>
+
+			<label class="option" name="elem_deselect">
+				Deselect Current Element
+				<input class="current">
+			</label>
+
+			<label class="option" name="change_tab_left">
+				Switch to Left Tab
+				<input class="current">
+			</label>
+
+			<label class="option" name="change_tab_right">
+				Switch to Right Tab
+				<input class="current">
+			</label>
+
+			<label class="option" name="move_tab_left">
+				Move Tab to the Left
+				<input class="current">
+			</label>
+
+			<label class="option" name="move_tab_right">
+				Move Tab to the Right
+				<input class="current">
+			</label>
+
+			<label class="option" name="history_back">
+				Go Back
+				<input class="current">
+			</label>
+
+			<label class="option" name="history_forward">
+				Show Blobs
+				<input class="current">
+			</label>
+
+			<button type="submit">Save</button>
+		</form>
+
+		<script src="options.js"></script>
+	</body>
+</html>
