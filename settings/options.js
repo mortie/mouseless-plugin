@@ -50,6 +50,31 @@ var presets = {
 		},
 	},
 
+	azerty: {
+		conf: {
+			chars: "mqlskdjfir",
+		},
+		keys: {
+			scroll_up: "k",
+			scroll_down: "l",
+			scroll_up_fast: "<Shift>°",
+			scroll_down_fast: "<Shift>+",
+			blobs_show: "h",
+			blobs_hide: "Escape",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_backspace: "Backspace",
+			elem_deselect: "Escape",
+			change_tab_left: "j",
+			change_tab_right: "m",
+			move_tab_left: "<Shift>J",
+			move_tab_right: "<Shift>M",
+			history_back: "<Control>j",
+			history_forward: "<Control>m",
+		},
+	},
+
 	dvorak: {
 		conf: {
 			chars: "sanotehucp",
@@ -72,6 +97,31 @@ var presets = {
 			move_tab_right: "<Shift>S",
 			history_back: "<Control>h",
 			history_forward: "<Control>s",
+		},
+	},
+
+	colemak: {
+		conf: {
+			chars: "oairesntup",
+		},
+		keys: {
+			scroll_up: "e",
+			scroll_down: "i",
+			scroll_up_fast: "<Shift>{",
+			scroll_down_fast: "<Shift>}",
+			blobs_show: "h",
+			blobs_hide: "Escape",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_backspace: "Backspace",
+			elem_deselect: "Escape",
+			change_tab_left: "n",
+			change_tab_right: "o",
+			move_tab_left: "<Shift>N",
+			move_tab_right: "<Shift>O",
+			history_back: "<Control>n",
+			history_forward: "<Control>o",
 		},
 	},
 };
