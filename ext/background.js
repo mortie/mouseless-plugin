@@ -1,3 +1,23 @@
+var enabled = false;
+
+function toggle() {
+	enabled = !enabled;
+
+	var name = "assets/"+(enabled ? "icon" : "icon-off");
+	var title = enabled ? "Turn off" : "Turn on";
+
+	var a;
+	browser.browserAction.setIcon(a = {
+		path: name+"-48.png"
+	});
+	console.log(JSON.stringify(a));
+
+	browser.browserAction.setTitle({ title });
+}
+toggle();
+
+browser.browserAction.onClicked.addListener(toggle);
+
 async function getCurrTabOffset(off) {
 	var win = await browser.windows.getCurrent();
 	var tab = (await browser.tabs.query({ active: true, windowId: win.id }))[0];

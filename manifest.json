@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Mouseless",
-	"version": "0.7.2",
+	"version": "0.7.3",
 
 	"description": "For a mouseless future.",
 
@@ -17,6 +17,10 @@
 
 	"options_ui": {
 		"page": "settings/options.html"
+	},
+
+	"browser_action": {
+		"default_icon": "icons/icon-64.png"
 	},
 
 	"permissions": [
