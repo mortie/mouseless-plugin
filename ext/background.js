@@ -1,6 +1,22 @@
 var enabled = false;
 
-function toggle() {
+async function sendTabEnabled(id, noretry) {
+	var obj = { action: enabled ? "enable" : "disable" };
+	browser.tabs.sendMessage(id, obj).catch(err => {
+		if (noretry) {
+			console.error(
+				"Send enabled/disabled message to tab "+id+":",
+				err.message);
+		} else {
+			console.log(
+				"Failed to send enabled/disabled message to tab "+
+				id+", retrying once.");
+			setTimeout(() => sendTabEnabled(id, true), 100);
+		}
+	});
+}
+
+async function toggle() {
 	enabled = !enabled;
 
 	var name = "assets/"+(enabled ? "icon" : "icon-off");
@@ -10,13 +26,21 @@ function toggle() {
 	browser.browserAction.setIcon(a = {
 		path: name+"-48.png"
 	});
-	console.log(JSON.stringify(a));
 
 	browser.browserAction.setTitle({ title });
+
+	var tabs = await browser.tabs.query({});
+	for (var i in tabs)
+		sendTabEnabled(tabs[i].id);
 }
 toggle();
 
 browser.browserAction.onClicked.addListener(toggle);
+
+browser.tabs.onUpdated.addListener((id, evt) => {
+	if (evt.status === "complete")
+		sendTabEnabled(id);
+});
 
 async function getCurrTabOffset(off) {
 	var win = await browser.windows.getCurrent();

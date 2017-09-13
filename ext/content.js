@@ -34,6 +34,21 @@ var bridge = {
 	},
 };
 
+var enabled = true;
+
+browser.runtime.onMessage.addListener(obj => {
+	switch (obj.action) {
+	case "enable":
+		enabled = true;
+		break;
+	case "disable":
+		enabled = false;
+		break;
+	default:
+		console.error("Unknown action: "+obj.action);
+	}
+});
+
 var defaultConf = {
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
@@ -43,6 +58,7 @@ var defaultConf = {
 	location_change_check_timeout: 2000,
 	yt_fix_space: true,
 };
+var conf = defaultConf;
 
 var defaultKeys = {
 	scroll_up: "k",
@@ -63,6 +79,7 @@ var defaultKeys = {
 	history_back: "<Control>j",
 	history_forward: "<Control>;",
 };
+var keys = {};
 
 browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 	var keyNames = Object.keys(defaultKeys);
@@ -78,9 +95,6 @@ browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 			null ? defaultConf[name] : obj.conf[name];
 	}
 });
-
-var keys = {};
-var conf = {};
 
 function interpretKey(name, k) {
 	var key = {};
@@ -410,6 +424,8 @@ function isValidElem(elem) {
 }
 
 window.addEventListener("keydown", function(evt) {
+	if (!enabled)
+		return;
 	if (/about:.+/.test(location.href))
 		return;
 
