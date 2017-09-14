@@ -17,3 +17,5 @@ exportpng() {
 exportpng icon &
 exportpng icon-off &
 await
+
+find . -name '*~' -print0 | xargs -0 rm
