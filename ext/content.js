@@ -83,12 +83,16 @@ var keys = {};
 
 browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 	var keyNames = Object.keys(defaultKeys);
+	if (obj.keys === undefined)
+		obj.keys = {};
 	for (var i in keyNames) {
 		var name = keyNames[i];
 		interpretKey(name, obj.keys[name] || defaultKeys[name]);
 	}
 
 	var confNames = Object.keys(defaultConf);
+	if (obj.conf === undefined)
+		obj.conf = {};
 	for (var i in confNames) {
 		var name = confNames[i];
 		conf[name] = obj.conf[name] ==
