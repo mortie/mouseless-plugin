@@ -75,7 +75,7 @@ var defaultKeys = {
 	change_tab_left: "j",
 	change_tab_right: ";",
 	move_tab_left: "<Shift>J",
-	move_tab_right: "<Shift>;",
+	move_tab_right: "<Shift>:",
 	history_back: "<Control>j",
 	history_forward: "<Control>;",
 };
