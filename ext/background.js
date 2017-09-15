@@ -20,7 +20,7 @@ async function toggle() {
 	enabled = !enabled;
 
 	var name = "assets/"+(enabled ? "icon" : "icon-off");
-	var title = enabled ? "Turn off" : "Turn on";
+	var title = enabled ? "Turn off Mouseless" : "Turn on Mouseless";
 
 	var a;
 	browser.browserAction.setIcon(a = {
