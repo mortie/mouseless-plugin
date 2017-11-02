@@ -3,6 +3,7 @@ var presets = {
 	qwerty_us: {
 		conf: {
 			chars: ";alskdjfir",
+			blacklist: "",
 		},
 		keys: {
 			scroll_up: "k",
@@ -28,6 +29,7 @@ var presets = {
 	qwerty_no: {
 		conf: {
 			chars: "øalskdjfir",
+			blacklist: "",
 		},
 		keys: {
 			scroll_up: "k",
@@ -53,6 +55,7 @@ var presets = {
 	azerty: {
 		conf: {
 			chars: "mqlskdjfir",
+			blacklist: "",
 		},
 		keys: {
 			scroll_up: "k",
@@ -78,6 +81,7 @@ var presets = {
 	dvorak: {
 		conf: {
 			chars: "sanotehucp",
+			blacklist: "",
 		},
 		keys: {
 			scroll_up: "t",
@@ -103,6 +107,7 @@ var presets = {
 	colemak: {
 		conf: {
 			chars: "oairesntup",
+			blacklist: "",
 		},
 		keys: {
 			scroll_up: "e",

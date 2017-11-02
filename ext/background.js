@@ -2,6 +2,7 @@ var enabled = false;
 
 async function sendTabEnabled(id, noretry) {
 	var obj = { action: enabled ? "enable" : "disable" };
+
 	browser.tabs.sendMessage(id, obj).catch(err => {
 		if (noretry) {
 			console.error(

@@ -34,7 +34,8 @@ var bridge = {
 	},
 };
 
-var enabled = true;
+var enabled = false;
+var blacklisted = false;
 
 browser.runtime.onMessage.addListener(obj => {
 	switch (obj.action) {
@@ -50,6 +51,7 @@ browser.runtime.onMessage.addListener(obj => {
 });
 
 var defaultConf = {
+	blacklist: "",
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
@@ -82,6 +84,8 @@ var defaultKeys = {
 var keys = {};
 
 browser.storage.local.get([ "keys", "conf" ]).then(obj => {
+
+	// Get keys
 	var keyNames = Object.keys(defaultKeys);
 	if (obj.keys === undefined)
 		obj.keys = {};
@@ -90,6 +94,7 @@ browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 		interpretKey(name, obj.keys[name] || defaultKeys[name]);
 	}
 
+	// Get conf
 	var confNames = Object.keys(defaultConf);
 	if (obj.conf === undefined)
 		obj.conf = {};
@@ -97,6 +102,16 @@ browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 		var name = confNames[i];
 		conf[name] = obj.conf[name] ==
 			null ? defaultConf[name] : obj.conf[name];
+	}
+
+	// Is this URL blacklisted?
+	var rxes = conf.blacklist.split("\n").filter(x => x.trim() !== "");
+	for (var i in rxes) {
+		var rx = new RegExp(rxes[i].trim());
+		if (rx.test(location.href)) {
+			blacklisted = true;
+			break;
+		}
 	}
 });
 
@@ -295,7 +310,7 @@ var blobList = {
 				"font: 12px sans-serif",
 				"top: "+pos.top+"px",
 				"left: "+pos.left+"px",
-				"line-height: 12px",
+				"line-height: 13px",
 				"font-size: 12px",
 				""
 			].join(" !important;");
@@ -428,7 +443,7 @@ function isValidElem(elem) {
 }
 
 window.addEventListener("keydown", function(evt) {
-	if (!enabled)
+	if (!enabled || blacklisted)
 		return;
 	if (/about:.+/.test(location.href))
 		return;
