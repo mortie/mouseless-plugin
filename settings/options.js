@@ -44,7 +44,7 @@ var presets = {
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "j",
-			change_tab_right: ";",
+			change_tab_right: "ø",
 			move_tab_left: "<Shift>J",
 			move_tab_right: "<Shift>ø",
 			history_back: "<Control>j",
