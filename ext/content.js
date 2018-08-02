@@ -465,6 +465,8 @@ window.addEventListener("keydown", function(evt) {
 
 	//User is typing a key to a blob
 	if (blobList.visible) {
+		evt.preventDefault();
+		evt.stopPropagation();
 
 		//Hide blobs if appropriate
 		if (isMatch(keys.blobs_hide, evt)) {
@@ -481,8 +483,6 @@ window.addEventListener("keydown", function(evt) {
 		var c = evt.key;
 		if (conf.chars.indexOf(c) !== -1) {
 			blobList.appendKey(c);
-			evt.preventDefault();
-			evt.stopPropagation();
 			return false;
 		}
 	}
