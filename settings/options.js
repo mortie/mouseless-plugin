@@ -165,7 +165,7 @@ document.querySelector("form").addEventListener("submit", e => {
 
 	forEachOption((el, section, name, curr) => {
 		vals[section] = vals[section] || {};
-		vals[section][name] = curr.value;
+		vals[section][name] = curr.value === "" ? " " : curr.value;
 	});
 	browser.storage.local.set(vals);
 });
