@@ -72,6 +72,7 @@ var defaultKeys = {
 	blobs_click: "Enter",
 	blobs_click_new_tab: "<Shift>Enter",
 	blobs_click_clipboard: "<Control>Enter",
+	blobs_focus: "Tab",
 	blobs_backspace: "Backspace",
 	elem_deselect: "Escape",
 	change_tab_left: "j",
@@ -392,6 +393,18 @@ var blobList = {
 		blobList.hideBlobs();
 	},
 
+	focus: function() {
+		if (!blobList.visible)
+			return;
+
+		var blob = blobList.blobs[blobList.currentKey];
+		if (!blob)
+			return;
+
+		blobList.hideBlobs();
+		blob.linkElem.focus();
+	},
+
 	appendKey: function(c) {
 		blobList.currentKey += c;
 		blobList.overview.innerText = blobList.currentKey;
@@ -509,6 +522,10 @@ window.addEventListener("keydown", function(evt) {
 		blobList.clickNewTab();
 	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_click_clipboard, evt)) {
 		blobList.clickClipboard();
+
+	//Focus element
+	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_focus, evt)) {
+		blobList.focus();
 
 	//Scrolling
 	} else if (onWebPage && isMatch(keys.scroll_up, evt)) {
