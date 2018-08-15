@@ -251,7 +251,7 @@ var blobList = {
 		if (!onWebPage)
 			return;
 
-		var linkElems = document.querySelectorAll("a, button, input, textarea");
+		var linkElems = document.querySelectorAll("a, button, input, select, textarea, summary, [role='button'], [tabindex='0']");
 
 		//Remove old container contents
 		blobList.container.innerText = "";
