@@ -482,7 +482,8 @@ window.addEventListener("keydown", function(evt) {
 		evt.stopPropagation();
 
 		//Hide blobs if appropriate
-		if (isMatch(keys.blobs_hide, evt)) {
+		//Escape key always hides blobs if visible
+		if (evt.which === 27 || isMatch(keys.blobs_hide, evt)) {
 			blobList.hideBlobs();
 			return;
 		}
