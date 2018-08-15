@@ -56,6 +56,7 @@ var defaultConf = {
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
 	chars: ";alskdjfir",
+	timer: 0,
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
 	yt_fix_space: true,
@@ -492,12 +493,28 @@ window.addEventListener("keydown", function(evt) {
 		//Backspace if appropriate
 		if (isMatch(keys.blobs_backspace, evt)) {
 			blobList.backspace();
+
+			//Stop auto-submit timeout
+			if (timer) {
+				clearTimeout(timer);
+				timer = false;
+			}
+
 			return;
 		}
 
 		var c = evt.key;
 		if (conf.chars.indexOf(c) !== -1) {
 			blobList.appendKey(c);
+
+			//Reset auto-submit timeout
+			if (timer) {
+				clearTimeout(timer);
+			}
+			if (conf.timer > 0) {
+				timer = this.setTimeout(blobList.click, conf.timer);
+			}
+
 			return false;
 		}
 	}
@@ -622,3 +639,5 @@ var scroll = {
 	startDate: 0,
 	endDate: 0,
 };
+
+var timer = false;
