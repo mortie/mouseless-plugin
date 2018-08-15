@@ -352,6 +352,7 @@ var blobList = {
 		&&  blob.linkElem.href
 		&&  blob.linkElem.href.indexOf("javascript") != 0) {
 			blobList.hideBlobs();
+			blob.linkElem.focus();
 			location.href = blob.linkElem.href;
 		} else {
 			blobList.hideBlobs();
