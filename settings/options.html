@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>Mouseless Settings</title>
@@ -42,8 +42,9 @@ select {
 		</style>
 	</head>
 	<body>
+		<label for="presets">Select preset</label>
 		<select id="presets">
-			<option>Select preset...</option>
+			<option value="numeric_links">Numeric - links only</option>
 			<option value="qwerty_us">QWERTY</option>
 			<option value="qwerty_no">QWERTY (Norwegian)</option>
 			<option value="azerty">AZERTY</option>
@@ -56,6 +57,11 @@ select {
 
 			<label class="option" name="conf.chars">
 				Blob Characters
+				<input class="current">
+			</label>
+
+			<label class="option" name="conf.timer">
+				Auto-submit timer (in ms; 0 for no timer)
 				<input class="current">
 			</label>
 
@@ -111,6 +117,11 @@ select {
 
 			<label class="option" name="keys.blobs_click_clipboard">
 				Save URL to Clipboard
+				<input class="current">
+			</label>
+
+			<label class="option" name="keys.blobs_focus">
+				Focus
 				<input class="current">
 			</label>
 

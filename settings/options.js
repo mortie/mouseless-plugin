@@ -1,9 +1,38 @@
 
 var presets = {
+	numeric_links: {
+		conf: {
+			chars: "123456789",
+			blacklist: "",
+			timer: 0
+		},
+		keys: {
+			scroll_up: " ",
+			scroll_down: " ",
+			scroll_up_fast: " ",
+			scroll_down_fast: " ",
+			blobs_show: "h",
+			blobs_hide: "h",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
+			blobs_backspace: "Backspace",
+			elem_deselect: " ",
+			change_tab_left: " ",
+			change_tab_right: " ",
+			move_tab_left: " ",
+			move_tab_right: " ",
+			history_back: " ",
+			history_forward: " ",
+		},
+	},
+
 	qwerty_us: {
 		conf: {
 			chars: ";alskdjfir",
 			blacklist: "",
+			timer: 0
 		},
 		keys: {
 			scroll_up: "k",
@@ -15,6 +44,7 @@ var presets = {
 			blobs_click: "Enter",
 			blobs_click_new_tab: "<Shift>Enter",
 			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "j",
@@ -30,6 +60,7 @@ var presets = {
 		conf: {
 			chars: "øalskdjfir",
 			blacklist: "",
+			timer: 0
 		},
 		keys: {
 			scroll_up: "k",
@@ -41,6 +72,7 @@ var presets = {
 			blobs_click: "Enter",
 			blobs_click_new_tab: "<Shift>Enter",
 			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "j",
@@ -56,6 +88,7 @@ var presets = {
 		conf: {
 			chars: "mqlskdjfir",
 			blacklist: "",
+			timer: 0
 		},
 		keys: {
 			scroll_up: "k",
@@ -67,6 +100,7 @@ var presets = {
 			blobs_click: "Enter",
 			blobs_click_new_tab: "<Shift>Enter",
 			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "j",
@@ -82,6 +116,7 @@ var presets = {
 		conf: {
 			chars: "sanotehucp",
 			blacklist: "",
+			timer: 0
 		},
 		keys: {
 			scroll_up: "t",
@@ -93,6 +128,7 @@ var presets = {
 			blobs_click: "Enter",
 			blobs_click_new_tab: "<Shift>Enter",
 			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "h",
@@ -108,6 +144,7 @@ var presets = {
 		conf: {
 			chars: "oairesntup",
 			blacklist: "",
+			timer: 0
 		},
 		keys: {
 			scroll_up: "e",
@@ -119,6 +156,7 @@ var presets = {
 			blobs_click: "Enter",
 			blobs_click_new_tab: "<Shift>Enter",
 			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
 			blobs_backspace: "Backspace",
 			elem_deselect: "Escape",
 			change_tab_left: "n",
@@ -165,7 +203,7 @@ document.querySelector("form").addEventListener("submit", e => {
 
 	forEachOption((el, section, name, curr) => {
 		vals[section] = vals[section] || {};
-		vals[section][name] = curr.value;
+		vals[section][name] = curr.value === "" ? " " : curr.value;
 	});
 	browser.storage.local.set(vals);
 });

@@ -55,7 +55,8 @@ var defaultConf = {
 	scroll_speed: 0.3,
 	scroll_speed_fast: 1.1,
 	scroll_friction: 0.8,
-	chars: ";alskdjfir",
+	chars: "123456789",
+	timer: 0,
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
 	yt_fix_space: true,
@@ -63,23 +64,24 @@ var defaultConf = {
 var conf = defaultConf;
 
 var defaultKeys = {
-	scroll_up: "k",
-	scroll_down: "l",
-	scroll_up_fast: "<Shift>_",
-	scroll_down_fast: "<Shift>+",
+	scroll_up: " ",
+	scroll_down: " ",
+	scroll_up_fast: " ",
+	scroll_down_fast: " ",
 	blobs_show: "h",
-	blobs_hide: "Escape",
+	blobs_hide: "h",
 	blobs_click: "Enter",
 	blobs_click_new_tab: "<Shift>Enter",
 	blobs_click_clipboard: "<Control>Enter",
+	blobs_focus: "Tab",
 	blobs_backspace: "Backspace",
-	elem_deselect: "Escape",
-	change_tab_left: "j",
-	change_tab_right: ";",
-	move_tab_left: "<Shift>J",
-	move_tab_right: "<Shift>:",
-	history_back: "<Control>j",
-	history_forward: "<Control>;",
+	elem_deselect: " ",
+	change_tab_left: " ",
+	change_tab_right: " ",
+	move_tab_left: " ",
+	move_tab_right: " ",
+	history_back: " ",
+	history_forward: " ",
 };
 var keys = {};
 
@@ -251,7 +253,7 @@ var blobList = {
 		if (!onWebPage)
 			return;
 
-		var linkElems = document.querySelectorAll("a, button, input, textarea");
+		var linkElems = document.querySelectorAll("a, button, input, select, textarea, summary, [role='button'], [tabindex='0']");
 
 		//Remove old container contents
 		blobList.container.innerText = "";
@@ -351,6 +353,7 @@ var blobList = {
 		&&  blob.linkElem.href
 		&&  blob.linkElem.href.indexOf("javascript") != 0) {
 			blobList.hideBlobs();
+			blob.linkElem.focus();
 			location.href = blob.linkElem.href;
 		} else {
 			blobList.hideBlobs();
@@ -390,6 +393,18 @@ var blobList = {
 		bridge.setClipboard(blob.linkElem.href);
 
 		blobList.hideBlobs();
+	},
+
+	focus: function() {
+		if (!blobList.visible)
+			return;
+
+		var blob = blobList.blobs[blobList.currentKey];
+		if (!blob)
+			return;
+
+		blobList.hideBlobs();
+		blob.linkElem.focus();
 	},
 
 	appendKey: function(c) {
@@ -469,7 +484,8 @@ window.addEventListener("keydown", function(evt) {
 		evt.stopPropagation();
 
 		//Hide blobs if appropriate
-		if (isMatch(keys.blobs_hide, evt)) {
+		//Escape key always hides blobs if visible
+		if (evt.which === 27 || isMatch(keys.blobs_hide, evt)) {
 			blobList.hideBlobs();
 			return;
 		}
@@ -477,12 +493,28 @@ window.addEventListener("keydown", function(evt) {
 		//Backspace if appropriate
 		if (isMatch(keys.blobs_backspace, evt)) {
 			blobList.backspace();
+
+			//Stop auto-submit timeout
+			if (timer) {
+				clearTimeout(timer);
+				timer = false;
+			}
+
 			return;
 		}
 
 		var c = evt.key;
 		if (conf.chars.indexOf(c) !== -1) {
 			blobList.appendKey(c);
+
+			//Reset auto-submit timeout
+			if (timer) {
+				clearTimeout(timer);
+			}
+			if (conf.timer > 0) {
+				timer = this.setTimeout(blobList.click, conf.timer);
+			}
+
 			return false;
 		}
 	}
@@ -509,6 +541,10 @@ window.addEventListener("keydown", function(evt) {
 		blobList.clickNewTab();
 	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_click_clipboard, evt)) {
 		blobList.clickClipboard();
+
+	//Focus element
+	} else if (onWebPage && blobList.visible && isMatch(keys.blobs_focus, evt)) {
+		blobList.focus();
 
 	//Scrolling
 	} else if (onWebPage && isMatch(keys.scroll_up, evt)) {
@@ -603,3 +639,5 @@ var scroll = {
 	startDate: 0,
 	endDate: 0,
 };
+
+var timer = false;
