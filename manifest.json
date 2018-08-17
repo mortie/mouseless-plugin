@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "Mouseless JK",
+	"name": "Mouseless",
 	"version": "0.12.0",
 
 	"description": "Quick keyboard access to links and other interactive elements",
@@ -37,7 +37,7 @@
 
 	"applications": {
 		"gecko": {
-			"id": "@mouselessjk"
+			"id": "@mouseless"
 		}
 	},
 

@@ -169,7 +169,7 @@ var presets = {
 	},
 };
 
-var defaultPreset = presets.numeric_links;
+var defaultPreset = presets.qwerty_us;
 
 function forEachOption(cb) {
 	var opts = document.querySelectorAll("form .option");
