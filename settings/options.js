@@ -1,33 +1,5 @@
 
 var presets = {
-	numeric_links: {
-		conf: {
-			chars: "123456789",
-			blacklist: "",
-			timer: 0
-		},
-		keys: {
-			scroll_up: " ",
-			scroll_down: " ",
-			scroll_up_fast: " ",
-			scroll_down_fast: " ",
-			blobs_show: "h",
-			blobs_hide: "h",
-			blobs_click: "Enter",
-			blobs_click_new_tab: "<Shift>Enter",
-			blobs_click_clipboard: "<Control>Enter",
-			blobs_focus: "Tab",
-			blobs_backspace: "Backspace",
-			elem_deselect: " ",
-			change_tab_left: " ",
-			change_tab_right: " ",
-			move_tab_left: " ",
-			move_tab_right: " ",
-			history_back: " ",
-			history_forward: " ",
-		},
-	},
-
 	qwerty_us: {
 		conf: {
 			chars: ";alskdjfir",
@@ -165,6 +137,34 @@ var presets = {
 			move_tab_right: "<Shift>O",
 			history_back: "<Control>n",
 			history_forward: "<Control>o",
+		},
+	},
+
+	numeric_links: {
+		conf: {
+			chars: "123456789",
+			blacklist: "",
+			timer: 0
+		},
+		keys: {
+			scroll_up: " ",
+			scroll_down: " ",
+			scroll_up_fast: " ",
+			scroll_down_fast: " ",
+			blobs_show: "h",
+			blobs_hide: "h",
+			blobs_click: "Enter",
+			blobs_click_new_tab: "<Shift>Enter",
+			blobs_click_clipboard: "<Control>Enter",
+			blobs_focus: "Tab",
+			blobs_backspace: "Backspace",
+			elem_deselect: " ",
+			change_tab_left: " ",
+			change_tab_right: " ",
+			move_tab_left: " ",
+			move_tab_right: " ",
+			history_back: " ",
+			history_forward: " ",
 		},
 	},
 };
