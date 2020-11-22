@@ -373,7 +373,7 @@ var blobList = {
 
 		blobList.hideBlobs();
 		if (blob.linkElem.tagName == "A" && blob.linkElem.href) {
-		    bridge.openTab(blob.linkElem.href, conf.focus_new_tab.trim().length != 0);
+			bridge.openTab(blob.linkElem.href, conf.focus_new_tab.trim().length != 0);
 		} else {
 			blob.linkElem.click();
 			blob.linkElem.focus();
