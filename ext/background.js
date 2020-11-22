@@ -78,10 +78,10 @@ var bridge = {
 		browser.tabs.move(tab.id, { index });
 	},
 
-	openTab: function(href) {
+    openTab: function(href, focus) {
 		browser.tabs.create({
 		    url: href,
-		    active: false
+		    active: focus
 		});
 	},
 };
