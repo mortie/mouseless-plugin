@@ -59,7 +59,6 @@ var defaultConf = {
 	timer: 0,
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
-	yt_fix_space: true,
 };
 var conf = defaultConf;
 
@@ -573,14 +572,6 @@ window.addEventListener("keydown", function(evt) {
 		bridge.moveTabLeft();
 	} else if (isMatch(keys.move_tab_right, evt)) {
 		bridge.moveTabRight();
-
-	//Fix youtube space by emulating clicking the player
-	} else if (conf.yt_fix_space
-			&& /youtube\.com/.test(location.host)
-			&& location.pathname.indexOf("/watch") === 0
-			&& evt.keyCode === 32) {
-
-		document.getElementById("movie_player").click();
 
 	//We don't want to stop the event from propagating
 	//if it hasn't matched anything yet

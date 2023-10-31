@@ -6,14 +6,25 @@ ignore="
 	assets/compile.sh
 	webext.sh"
 
-if [ "$1" = run ]; then
-	firefox=""
+find_firefox() {
 	for ff in firefox firefox-nightly firefox-aurora; do
 		if which "$ff" >/dev/null 2>/dev/null; then
-			firefox="$ff"
-			break
+			echo "$ff"
+			return
 		fi
 	done
+
+	if [ -d "/Applications/Firefox.app" ]; then
+		echo "/Applications/Firefox.app/Contents/MacOS/firefox"
+		return
+	elif [ -d "Applications/Firefox Nightly.app" ]; then
+		echo "/Applications/Firefox Nightly.app/Contents/MacOS/firefox"
+		return
+	fi
+}
+
+if [ "$1" = run ]; then
+	firefox="$(find_firefox)"
 
 	if [ -z "$firefox" ]; then
 		echo "No firefox found."
