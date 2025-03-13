@@ -14,7 +14,10 @@ find_firefox() {
 		fi
 	done
 
-	if [ -d "/Applications/Firefox.app" ]; then
+	if [ -d "/Applications/Firefox Developer Edition.app" ]; then
+		echo "/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox"
+		return
+	elif [ -d "/Applications/Firefox.app" ]; then
 		echo "/Applications/Firefox.app/Contents/MacOS/firefox"
 		return
 	elif [ -d "Applications/Firefox Nightly.app" ]; then
