@@ -9,11 +9,22 @@ body {
 	overflow: hidden;
 }
 
+@media (prefers-color-scheme: dark) {
+	body {
+		padding: 10px;
+		margin: 0px;
+		background: rgba(35, 34, 42);
+		color: #eee;
+	}
+}
+
 form .option {
-	margin: 12px;
+	margin-top: 12px;
 	margin-left: 0px;
+	margin-right: 12px;
 	display: inline-block;
-	width: 200px;
+	width: calc(50% - 20px);
+	box-sizing: border-box;
 }
 
 form .option.big {
@@ -24,6 +35,12 @@ form .option .current {
 	display: block;
 	width: 100%;
 	height: 100%;
+}
+
+form .option input[type="checkbox"].current {
+	display: inline;
+	width: auto;
+	height: auto;
 }
 
 form .option textarea.current {
@@ -42,18 +59,17 @@ select {
 		</style>
 	</head>
 	<body>
-		<label for="presets">Presets</label>
-		<select id="presets">
-			<option value="">Select preset...</option>
-			<option value="qwerty_us">QWERTY</option>
-			<option value="qwerty_no">QWERTY (Norwegian)</option>
-			<option value="azerty">AZERTY</option>
-			<option value="dvorak">Dvorak</option>
-			<option value="colemak">Colemak</option>
-			<option value="numeric_links">Numeric - links only</option>
-		</select>
-
 		<form>
+			<select id="presets">
+				<option value="">Load preset...</option>
+				<option value="qwerty_us">QWERTY</option>
+				<option value="qwerty_no">QWERTY (Norwegian)</option>
+				<option value="azerty">AZERTY</option>
+				<option value="dvorak">Dvorak</option>
+				<option value="colemak">Colemak</option>
+				<option value="numeric_links">Numeric - links only</option>
+			</select>
+
 			<button type="submit">Save</button>
 
 			<label class="option" name="conf.chars">
@@ -66,9 +82,9 @@ select {
 				<input class="current">
 			</label>
 
-			<label class="option" name="conf.focus_new_tab">
-				Focus to the new tab (remove all text to not focus)
-				<input class="current">
+			<label class="option big" name="conf.focus_new_tab">
+				<input class="current" type="checkbox">
+				Focus new tab
 			</label>
 
 			<label class="option big" name="conf.blacklist">

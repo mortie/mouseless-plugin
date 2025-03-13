@@ -5,7 +5,7 @@ var presets = {
 			chars: ";alskdjfir",
 			blacklist: "",
 			timer: 0,
-			focus_new_tab: "yes",
+			focus_new_tab: true,
 		},
 		keys: {
 			scroll_up: "k",
@@ -34,7 +34,6 @@ var presets = {
 			chars: "øalskdjfir",
 			blacklist: "",
 			timer: 0,
-			focus_new_tab: "yes",
 		},
 		keys: {
 			scroll_up: "k",
@@ -63,7 +62,6 @@ var presets = {
 			chars: "mqlskdjfir",
 			blacklist: "",
 			timer: 0,
-			focus_new_tab: "yes",
 		},
 		keys: {
 			scroll_up: "k",
@@ -92,7 +90,6 @@ var presets = {
 			chars: "sanotehucp",
 			blacklist: "",
 			timer: 0,
-		        focus_new_tab: "yes",
 		},
 		keys: {
 			scroll_up: "t",
@@ -121,7 +118,6 @@ var presets = {
 			chars: "oairesntup",
 			blacklist: "",
 			timer: 0,
-			focus_new_tab: "yes",
 		},
 		keys: {
 			scroll_up: "e",
@@ -150,7 +146,6 @@ var presets = {
 			chars: "123456789",
 			blacklist: "",
 			timer: 0,
-			focus_new_tab: "yes",
 		},
 		keys: {
 			scroll_up: " ",
@@ -196,6 +191,10 @@ document.querySelector("select").addEventListener("change", e => {
 
 	var preset = e.target.value;
 	forEachOption((el, section, name, curr) => {
+		if (presets[preset][section] == null) {
+			return;
+		}
+
 		curr.value = presets[preset][section][name];
 	});
 });
@@ -209,7 +208,11 @@ document.querySelector("form").addEventListener("submit", e => {
 
 	forEachOption((el, section, name, curr) => {
 		vals[section] = vals[section] || {};
-		vals[section][name] = curr.value === "" ? " " : curr.value;
+		if (curr.type == "checkbox") {
+			vals[section][name] = curr.checked;
+		} else {
+			vals[section][name] = curr.value === "" ? " " : curr.value;
+		}
 	});
 	browser.storage.local.set(vals);
 });
@@ -217,7 +220,6 @@ document.querySelector("form").addEventListener("submit", e => {
 // Load options
 async function loadOpts() {
 	var opts = document.querySelectorAll("form .option");
-
 	var vals = await browser.storage.local.get([ "keys", "conf" ]);
 
 	forEachOption((el, section, name, curr) => {
@@ -226,7 +228,11 @@ async function loadOpts() {
 
 		var def = defaultPreset[section][name];
 
-		curr.value = saved == null ? def : saved;
+		if (curr.type == "checkbox") {
+			curr.checked = saved == null ? def : saved;
+		} else {
+			curr.value = saved == null ? def : saved;
+		}
 	});
 }
 document.addEventListener("DOMContentLoaded", loadOpts);

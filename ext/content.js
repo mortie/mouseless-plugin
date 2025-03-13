@@ -1,3 +1,5 @@
+console.log("Hello from content.js");
+
 function callBridge(action, ...args) {
 	browser.runtime.sendMessage({
 		action: action,
@@ -38,6 +40,7 @@ var enabled = false;
 var blacklisted = false;
 
 browser.runtime.onMessage.addListener(obj => {
+	console.log("Message:", obj);
 	switch (obj.action) {
 	case "enable":
 		enabled = true;
@@ -52,9 +55,9 @@ browser.runtime.onMessage.addListener(obj => {
 
 var defaultConf = {
 	blacklist: "",
-	scroll_speed: 0.3,
-	scroll_speed_fast: 1.1,
-	scroll_friction: 0.8,
+	scroll_speed: 1,
+	scroll_speed_fast: 3,
+	scroll_friction: 0.1,
 	chars: ";alskdjfir",
 	timer: 0,
 	focus_new_tab: "yes",
@@ -86,6 +89,7 @@ var defaultKeys = {
 var keys = {};
 
 browser.storage.local.get([ "keys", "conf" ]).then(obj => {
+	console.log(conf);
 
 	// Get keys
 	var keyNames = Object.keys(defaultKeys);
@@ -296,7 +300,7 @@ var blobList = {
 				return true;
 
 			//Create the blob's key
-			key = createKey(nRealBlobs);
+			var key = createKey(nRealBlobs);
 			nRealBlobs += 1;
 
 			var blobElem = document.createElement("div");
@@ -372,7 +376,7 @@ var blobList = {
 
 		blobList.hideBlobs();
 		if (blob.linkElem.tagName == "A" && blob.linkElem.href) {
-			bridge.openTab(blob.linkElem.href, conf.focus_new_tab.trim().length != 0);
+			bridge.openTab(blob.linkElem.href, conf.focus_new_tab);
 		} else {
 			blob.linkElem.click();
 			blob.linkElem.focus();
@@ -607,22 +611,29 @@ var scroll = {
 	},
 
 	update: function() {
-		var tdiff = scroll.endTime - scroll.startTime;
-		if (tdiff < 100) {
-			scroll.velocity += scroll.acceleration;
-			window.scrollBy(0, scroll.velocity * tdiff);
-			scroll.velocity *= conf.scroll_friction;
-		}
-
-		if (tdiff < 100 && scroll.velocity > -0.1 && scroll.velocity < 0.1) {
+		if (scroll.acceleration == 0 && Math.abs(scroll.velocity) < 0.1) {
 			scroll.velocity = 0;
 			cancelAnimationFrame(scroll.raf);
 			scroll.raf = null;
-		} else {
-			scroll.startTime = scroll.endTime;
-			scroll.endTime = new Date().getTime();
-			scroll.raf = requestAnimationFrame(scroll.update);
+			return;
 		}
+
+		var dt = (scroll.endTime - scroll.startTime) / 1000;
+		if (isNaN(dt)) {
+			dt = 1;
+		} else if (dt > 100) {
+			dt = 100;
+		} else if (dt < 1) {
+			dt = 1;
+		}
+
+		var decel = -scroll.velocity * conf.scroll_friction;
+		scroll.velocity += (scroll.acceleration + decel) * dt;
+		window.scrollBy(0, scroll.velocity * dt);
+
+		scroll.startTime = scroll.endTime;
+		scroll.endTime = new Date().getTime();
+		scroll.raf = requestAnimationFrame(scroll.update);
 	},
 
 	raf: null,
