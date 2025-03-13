@@ -446,7 +446,7 @@ function isValidElem(elem) {
 	if (tag === "canvas")
 		return false;
 
-	if (elem.contentEditable.toLowerCase() === "true")
+	if (elem.isContentEditable)
 		return false;
 
 	if ((tag === "input")
