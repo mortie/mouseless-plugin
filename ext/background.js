@@ -80,8 +80,8 @@ var bridge = {
 
 	openTab: function(href, focus) {
 		browser.tabs.create({
-		    url: href,
-		    active: focus
+			url: href,
+			active: focus
 		});
 	},
 };
