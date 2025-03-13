@@ -20,8 +20,8 @@ var bridge = {
 		callBridge("moveTabRight");
 	},
 
-	openTab: function(href) {
-		callBridge("openTab", href);
+	openTab: function(href, focus) {
+		callBridge("openTab", href, focus);
 	},
 
 	setClipboard: function(txt) {
@@ -57,6 +57,7 @@ var defaultConf = {
 	scroll_friction: 0.8,
 	chars: ";alskdjfir",
 	timer: 0,
+	focus_new_tab: "yes",
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
 };
@@ -371,7 +372,7 @@ var blobList = {
 
 		blobList.hideBlobs();
 		if (blob.linkElem.tagName == "A" && blob.linkElem.href) {
-			bridge.openTab(blob.linkElem.href);
+			bridge.openTab(blob.linkElem.href, conf.focus_new_tab.trim().length != 0);
 		} else {
 			blob.linkElem.click();
 			blob.linkElem.focus();
