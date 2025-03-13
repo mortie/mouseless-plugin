@@ -44,6 +44,7 @@ browser.runtime.onMessage.addListener(obj => {
 	switch (obj.action) {
 	case "enable":
 		enabled = true;
+		loadConf();
 		break;
 	case "disable":
 		enabled = false;
@@ -60,7 +61,7 @@ var defaultConf = {
 	scroll_friction: 0.1,
 	chars: ";alskdjfir",
 	timer: 0,
-	focus_new_tab: "yes",
+	focus_new_tab: true,
 	input_whitelist: ["checkbox", "radio", "hidden", "submit", "reset", "button", "file", "image"],
 	location_change_check_timeout: 2000,
 };
@@ -88,38 +89,40 @@ var defaultKeys = {
 };
 var keys = {};
 
-browser.storage.local.get([ "keys", "conf" ]).then(obj => {
-	console.log(conf);
+function loadConf() {
+	browser.storage.local.get([ "keys", "conf" ]).then(obj => {
 
-	// Get keys
-	var keyNames = Object.keys(defaultKeys);
-	if (obj.keys === undefined)
-		obj.keys = {};
-	for (var i in keyNames) {
-		var name = keyNames[i];
-		interpretKey(name, obj.keys[name] || defaultKeys[name]);
-	}
-
-	// Get conf
-	var confNames = Object.keys(defaultConf);
-	if (obj.conf === undefined)
-		obj.conf = {};
-	for (var i in confNames) {
-		var name = confNames[i];
-		conf[name] = obj.conf[name] ==
-			null ? defaultConf[name] : obj.conf[name];
-	}
-
-	// Is this URL blacklisted?
-	var rxes = conf.blacklist.split("\n").filter(x => x.trim() !== "");
-	for (var i in rxes) {
-		var rx = new RegExp(rxes[i].trim());
-		if (rx.test(location.href)) {
-			blacklisted = true;
-			break;
+		// Get keys
+		var keyNames = Object.keys(defaultKeys);
+		if (obj.keys === undefined)
+			obj.keys = {};
+		for (var i in keyNames) {
+			var name = keyNames[i];
+			interpretKey(name, obj.keys[name] || defaultKeys[name]);
 		}
-	}
-});
+
+		// Get conf
+		var confNames = Object.keys(defaultConf);
+		if (obj.conf === undefined)
+			obj.conf = {};
+		for (var i in confNames) {
+			var name = confNames[i];
+			conf[name] = obj.conf[name] ==
+				null ? defaultConf[name] : obj.conf[name];
+		}
+
+		// Is this URL blacklisted?
+		var rxes = conf.blacklist.split("\n").filter(x => x.trim() !== "");
+		for (var i in rxes) {
+			var rx = new RegExp(rxes[i].trim());
+			if (rx.test(location.href)) {
+				blacklisted = true;
+				break;
+			}
+		}
+	});
+}
+loadConf();
 
 function interpretKey(name, k) {
 	var key = {};
